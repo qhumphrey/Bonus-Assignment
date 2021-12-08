@@ -1,0 +1,34 @@
+#Importing libraries
+import pandas as pd
+import matplotlib.pyplot as plt
+from scipy import stats
+
+# Call csv file
+df = pd.read_csv (r'forestfires.csv')
+# Will keep the rows where the area is not equal to zero
+df = df[df.area != 0]
+
+FFMC = df["FFMC"].iloc[0:] # Obtaining FFMC column values
+RH = df["RH"].iloc[0:] # Obtaining RH column values
+
+# Linear Regression of SSE
+m, b, r_value, p_value, std_err = stats.linregress(RH,FFMC)
+
+# Slop intercept form to plot the line.
+Y = m*RH + b
+
+print('Slope: ', m)
+print('Intercept: ',b)
+print('r value: ', r_value)
+print('p value: ', p_value)
+print('Standard Error: ', std_err)
+    
+# plt.plot(RH) #Ploting RH in X axis
+plt.plot(RH,FFMC,'o', color = 'magenta') #Ploting the y axis
+plt.plot(RH,Y,color='blue',linewidth=2,label="Fitted Line")
+plt.title('Relative Humidity vs Fine Fuel Moisture Code') #Plotting the title
+plt.xlabel('Relative Humidity (RH)') #Plotting the x label
+plt.ylabel('Fine Fuel Moisture Code (FFMC)') #Plotting the y label
+plt.legend()
+plt.grid()
+plt.show()

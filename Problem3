@@ -1,0 +1,59 @@
+#Importing libraries
+import numpy as np
+import math
+from scipy import special
+import scipy
+import matplotlib.pyplot as plt
+
+#Defining the Bessel Function
+def J(x,v):
+    n = 0.0 #Summation variable
+    for k in range (0,101): # Loop to calculate k interations
+        a = ((-1.0)**k)*((x/2.0)**(v+2*k)) # Defining the numerator
+        #Defining the denominator of Bessel Function
+        b = math.factorial(k+1) * math.factorial(v+k+1)
+        n = n + (a/b) #Summation loop
+        return n
+
+
+
+#Defining a function to have the the answer for diffrent x values into an array to facilitate when plotting
+def BesselArray(range_of_x, v):
+    array = []
+
+    for x in range_of_x: # loop for transfor the answer into an array
+        array.append(J(x,v))
+
+    return array
+
+
+
+# x range
+range_of_x = np.arange(0, 15.01, 0.25)
+# Defining the zeroth order v
+v0 = 0.0
+# Defining the first order v
+v1 = 1.0
+
+#Defining the solutions:
+# Bessel Array function
+sol_0 = BesselArray(range_of_x, v0) # v zeroth order
+sol_1 = BesselArray(range_of_x, v1) # v first order
+# Bessel Array built-in function
+scipy_sol_0 = scipy.special.jv(v0,range_of_x) # v zeroth order
+scipy_sol_1 = scipy.special.jv(v1,range_of_x) # v first order
+
+
+
+# Plots
+# Bessel Array function with v zeroth and first order
+plt.plot(sol_0, "r--", label = 'sol_0')
+plt.plot(sol_1, "b^", label = 'sol_1')
+# Bessel Array built-in function with v zeroth and first order
+plt.plot(scipy_sol_0, "black", label = 'scipy_sol_0')
+plt.plot(scipy_sol_1, "green", label = 'scipy_sol_1')
+plt.legend()
+plt.xlabel('X values')
+plt.ylabel('Bessel function values')
+plt.grid()
+plt.plot()
